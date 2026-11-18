@@ -1,10 +1,26 @@
+@font-face {
+  font-family: Hack;
+  src: url("fonts/Hack-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Hack;
+  src: url("fonts/Hack-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+
 :root {
   --grey: #2d2d2d;
   --text: #e8e6e1;
-  --dim: #8f8c86;
+  --dim: #b0ada6;
+  --faint: #7d7b76;
   --rule: #5a5855;
   --accent: #e8772e;
-  --photo-light: var(--text);
+  --label: 112px;
+  --gap: 24px;
 }
 
 * { box-sizing: border-box; }
@@ -15,8 +31,6 @@ html { -webkit-text-size-adjust: 100%; }
 
 body {
   margin: 0;
-  min-height: 100vh;
-  display: flex;
   background: var(--grey);
   color: var(--text);
   font: 16px/1.6 Hack, monospace;
@@ -24,28 +38,29 @@ body {
 }
 
 main {
-  width: 100%;
   max-width: 760px;
   margin: 0 auto;
-  padding: 56px 24px 32px;
-  display: flex;
-  flex-direction: column;
+  padding: 48px 24px 24px;
+}
+
+/* The header and every row share one two-column grid, so all text starts on the same line. */
+header, .row {
+  display: grid;
+  grid-template-columns: var(--label) 1fr;
+  gap: 0 var(--gap);
 }
 
 header {
-  margin-bottom: 40px;
-  display: flex;
   align-items: center;
-  gap: 24px;
+  padding-bottom: 24px;
+  border-bottom: 2px solid var(--text);
 }
 
 .avatar {
   position: relative;
   isolation: isolate;
-  flex: none;
-  width: clamp(72px, 14vw, 112px);
   aspect-ratio: 1;
-  background: var(--photo-light);
+  background: var(--text);
   border: 1px solid var(--rule);
 }
 
@@ -67,6 +82,7 @@ header {
   pointer-events: none;
 }
 
+/* At full size, the name and role together are about as tall as the portrait. */
 h1 {
   margin: 0 0 8px;
   font-size: clamp(40px, 9vw, 72px);
@@ -77,13 +93,10 @@ h1 {
 
 .role { margin: 0; color: var(--dim); font-size: 18px; }
 
-dl { margin: 0; border-top: 1px solid var(--rule); }
+dl { margin: 0; }
 
 .row {
-  display: grid;
-  grid-template-columns: 110px 1fr;
-  gap: 0 24px;
-  padding: 14px 0;
+  padding: 16px 0;
   border-bottom: 1px solid var(--rule);
 }
 
@@ -101,18 +114,29 @@ a {
   text-underline-offset: 3px;
 }
 
-a:hover, a:focus-visible { background: var(--accent); color: var(--grey); text-decoration: none; outline: none; }
+a:hover, a:focus-visible {
+  background: var(--accent);
+  color: var(--grey);
+  text-decoration: none;
+  outline: none;
+}
+
 footer {
-  margin-top: auto;
-  padding-top: 56px;
   display: flex;
   justify-content: space-between;
   gap: 16px;
-  color: var(--dim);
+  padding-top: 16px;
+  color: var(--faint);
   font-size: 13px;
 }
 
 @media (max-width: 520px) {
-  header { flex-direction: column; align-items: flex-start; gap: 18px; }
-  .row { grid-template-columns: 1fr; gap: 4px; }
+  :root { --label: 72px; --gap: 16px; }
+
+  /* Page padding, portrait and gap take 136px. The 12-letter name fills what's left. */
+  h1 { margin-bottom: 4px; font-size: calc((100vw - 136px) / 7); }
+
+  .role { font-size: 14px; line-height: 1.4; }
+
+  .row { grid-template-columns: 1fr; gap: 2px; }
 }
